@@ -1,0 +1,16 @@
+{
+  "library": "spring-boot",
+  "dateLibrary": "java8",
+  "generatorName": "spring",
+  "hideGenerationTimestamp": true,
+  "modelPackage": "com.entertainment.movie.dto",
+  "apiPackage": "com.entertainment.movie.api",
+  "serializableModel": true,
+  "interfaceOnly": true,
+  "openApiNullable": false,
+  "useTags": true,
+  "useGzipFeature" : true,
+  "unhandledException": true,
+  "useSpringBoot3": true,
+  "useSwaggerUI": true
+}

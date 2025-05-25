@@ -1,0 +1,91 @@
+openapi: 3.0.3
+info:
+  title: Movie API
+  description: "API contract of the movie API"
+  version: "1.0.0"
+paths:
+  /movie:
+    post:
+      operationId: create
+      tags:
+        - movie
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movie'
+
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonResponse'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonResponse'
+        '500':
+          description: Internal server error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonResponse'
+  /movie/{movieId}:
+    get:
+      operationId: view
+      tags:
+        - movie
+      parameters:
+        - name: movieId
+          in: path
+          required: true
+          description: The id of the movie to retrieve
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+
+components:
+  schemas:
+    Movie:
+      type: object
+      properties:
+        title:
+          type: string
+          description: "title of the movie"
+        description:
+          type: string
+          description: "a short description of the movie"
+        producer:
+          type: string
+          description: "name of the producer"
+        coverImage:
+          type: string
+        cast:
+          items:
+            type: string
+            description: name of the actor
+          description: "the list of actors"
+      required:
+        - title
+        - description
+        - producer
+        - coverImage
+    CommonResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+

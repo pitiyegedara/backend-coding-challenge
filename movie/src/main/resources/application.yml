@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: movie
+  springdoc:
+    swagger-ui:
+      path: /swagger-ui.html
+    api-docs:
+      path: /api-docs
