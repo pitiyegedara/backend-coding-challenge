@@ -1,11 +1,10 @@
-import org.hidetake.gradle.swagger.generator.SwaggerSource
-
 plugins {
     java
     id("org.springframework.boot") version "3.5.0"
     id("io.spring.dependency-management") version "1.1.7"
     id("org.openapi.generator") version "7.12.0"
     id("org.hidetake.swagger.generator") version "2.19.2"
+    id("org.flywaydb.flyway") version "11.8.2"
 }
 
 group = "com.entertainment"
@@ -24,7 +23,7 @@ repositories {
 swaggerSources.create("movieApp") {
     this.setInputFile(File("$rootDir/src/main/resources/api/movie-api-spec.yaml"))
     this.code.language = "spring"
-    this.code.outputDir= File("$buildDir/generated")
+    this.code.outputDir = File("$buildDir/generated")
     this.code.configFile = File("${rootDir}/src/main/resources/api/config.json")
     this.code.dependsOn(validation)
 }
@@ -33,12 +32,17 @@ swaggerSources.create("movieApp") {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
 
+    //database
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.postgresql:postgresql")
+    implementation("org.flywaydb:flyway-core")
+    runtimeOnly("org.flywaydb:flyway-database-postgresql")
+
     //open api code generation
     swaggerCodegen("org.openapitools:openapi-generator-cli:7.3.0")
     implementation("io.swagger.core.v3:swagger-annotations:2.2.20")
     implementation("jakarta.validation:jakarta.validation-api:3.1.1")
 
-    implementation("org.flywaydb:flyway-core")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
@@ -52,7 +56,7 @@ tasks {
         dependsOn(swaggerSources["movieApp"].code)
     }
 
-    processResources{
+    processResources {
         dependsOn(generateSwaggerCode)
     }
 
