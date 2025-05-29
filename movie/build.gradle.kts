@@ -3,6 +3,7 @@ plugins {
     id("org.springframework.boot") version "3.5.0"
     id("io.spring.dependency-management") version "1.1.7"
     id("org.hidetake.swagger.generator") version "2.19.2"
+    id("org.flywaydb.flyway") version "11.8.2"
 }
 
 group = "com.entertainment"
@@ -34,6 +35,7 @@ dependencies {
     swaggerCodegen("org.openapitools:openapi-generator-cli:7.3.0")
     implementation("io.swagger.core.v3:swagger-annotations:2.2.20")
     implementation("jakarta.validation:jakarta.validation-api:3.1.1")
+    runtimeOnly("org.flywaydb:flyway-database-postgresql")
 
     implementation("org.flywaydb:flyway-core")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
