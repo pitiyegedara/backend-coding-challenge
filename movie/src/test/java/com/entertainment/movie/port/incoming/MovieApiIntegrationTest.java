@@ -7,6 +7,7 @@ import com.entertainment.movie.port.outgoing.db.entity.MovieEntity;
 import com.entertainment.movie.port.outgoing.db.repository.MovieRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -35,17 +38,19 @@ public class MovieApiIntegrationTest {
     @Autowired
     private MovieRepository movieRepository;
 
-    MovieDto movieDto = new MovieDto().title("hello Jimmy").description("jimmy's life story")
-            .producer("timmy").durationInMinutes(120).language("English");
-    HttpEntity<MovieDto> requestEntity = new HttpEntity<>(movieDto);
-
     @BeforeEach
     public void beforeEach() {
         movieRepository.deleteAll();
     }
 
     @Test
+    @DisplayName("should successfully create a movie, when all inputs are valid")
     void shouldSuccessfullyCreateMovie() {
+
+        MovieDto movieDto = new MovieDto().title("hello Jimmy").description("jimmy's life story")
+                .producer("timmy").durationInMinutes(120).language("English");
+        HttpEntity<MovieDto> requestEntity = new HttpEntity<>(movieDto);
+
         ResponseEntity<CommonResponse> createMovieResponse = this.restTemplate.exchange(
                 "http://localhost:" + port + "/movie",
                 HttpMethod.POST,
@@ -74,6 +79,32 @@ public class MovieApiIntegrationTest {
     }
 
     @Test
+    @DisplayName("should return a 400 error for the requests with invalid parameters")
+    void badRequestErrorShouldBeThrownForInvalidInputs() {
+
+        MovieDto movieDto = new MovieDto().title("hello Jimmy").description("jimmy's life story")
+                .producer("timmy").durationInMinutes(120);
+        HttpEntity<MovieDto> requestEntity = new HttpEntity<>(movieDto);
+
+        ResponseEntity<CommonResponse> createMovieResponse = this.restTemplate.exchange(
+                "http://localhost:" + port + "/movie",
+                HttpMethod.POST,
+                requestEntity,
+                CommonResponse.class
+        );
+
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST,createMovieResponse.getStatusCode());
+        Assertions.assertNotNull(createMovieResponse.getBody());
+
+        Assertions.assertEquals("language: must not be null",
+                createMovieResponse.getBody().getMessage());
+        List<MovieEntity> movies = movieRepository.findAll();
+        Assertions.assertTrue(movies.isEmpty());
+
+    }
+
+    @Test
+    @DisplayName("should return the movie object, when an existing id is provided")
     void shouldReturnTheMovieObject() {
 
         var movieEntity = MovieEntity.builder().title("hello Jimmy").description("jimmy's life story")
@@ -96,6 +127,20 @@ public class MovieApiIntegrationTest {
         assertThat(getMovieResponse.getBody())
                 .usingRecursiveComparison()
                 .isEqualTo(expectedMovieDto);
+    }
+
+    @Test
+    @DisplayName("should return an 404 error when an un-existing id is provided")
+    void shouldReturnNotFoundHttpStatus() {
+
+        var id = UUID.randomUUID();
+        ResponseEntity<CommonResponse> getMovieResponse = this.restTemplate.getForEntity(
+                "http://localhost:" + port + "/movie/" + id,
+                CommonResponse.class
+        );
+        Assertions.assertEquals(HttpStatus.NOT_FOUND, getMovieResponse.getStatusCode());
+        Assertions.assertNotNull(getMovieResponse.getBody());
+        Assertions.assertEquals(getMovieResponse.getBody().getMessage(), "Could not find movie " + id + ".");
     }
 
 

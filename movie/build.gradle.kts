@@ -37,6 +37,7 @@ dependencies {
     swaggerCodegen("org.openapitools:openapi-generator-cli:7.3.0")
     implementation("io.swagger.core.v3:swagger-annotations:2.2.20")
     implementation("jakarta.validation:jakarta.validation-api:3.1.1")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.postgresql:postgresql")
