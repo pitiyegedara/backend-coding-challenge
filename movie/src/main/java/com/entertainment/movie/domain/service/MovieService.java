@@ -3,6 +3,8 @@ package com.entertainment.movie.domain.service;
 import com.entertainment.movie.domain.service.core.Movie;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class MovieService {
 
@@ -14,5 +16,9 @@ public class MovieService {
 
     public void createMovie(Movie movie) {
         databaseService.saveMovie(movie);
+    }
+
+    public Movie viewMovie(UUID id) {
+        return databaseService.viewMovie(id);
     }
 }

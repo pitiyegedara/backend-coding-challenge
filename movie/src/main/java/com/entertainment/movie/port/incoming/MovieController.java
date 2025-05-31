@@ -5,32 +5,34 @@ import com.entertainment.movie.api.MovieApi;
 import com.entertainment.movie.domain.service.MovieService;
 import com.entertainment.movie.dto.CommonResponse;
 import com.entertainment.movie.dto.MovieDto;
-import com.entertainment.movie.port.incoming.mapper.RequestMapper;
-import jakarta.validation.Valid;
+import com.entertainment.movie.port.incoming.mapper.RequestResponseMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.UUID;
+
 @RestController
 public class MovieController implements MovieApi {
 
-    private final RequestMapper requestMapper;
+    private final RequestResponseMapper requestResponseMapper;
     private final MovieService movieService;
 
-    public MovieController(RequestMapper requestMapper, MovieService movieService) {
-        this.requestMapper = requestMapper;
+    public MovieController(RequestResponseMapper requestResponseMapper, MovieService movieService) {
+        this.requestResponseMapper = requestResponseMapper;
         this.movieService = movieService;
     }
 
     @Override
     public ResponseEntity<CommonResponse> create(MovieDto movieDto) throws Exception {
-        var domainMovie = requestMapper.mapToDomainMovie(movieDto);
+        var domainMovie = requestResponseMapper.mapToDomainMovie(movieDto);
         movieService.createMovie(domainMovie);
-        return new ResponseEntity<>(requestMapper.fromMovieToCommonResponse(domainMovie), HttpStatus.CREATED);
+        return new ResponseEntity<>(requestResponseMapper.mapToCommonResponse(domainMovie), HttpStatus.CREATED);
     }
 
     @Override
     public ResponseEntity<MovieDto> view(String movieId) throws Exception {
-        return MovieApi.super.view(movieId);
+        var movie = movieService.viewMovie(UUID.fromString(movieId));
+        return new ResponseEntity<>(requestResponseMapper.mapToMovieDto(movie), HttpStatus.OK);
     }
 }
