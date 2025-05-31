@@ -6,4 +6,7 @@ CREATE TABLE IF NOT EXISTS movie (
     cover_image VARCHAR(255),
     cast_list VARCHAR(1000),
     PRIMARY KEY (id)
-);
+    );
+
+
+

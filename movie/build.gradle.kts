@@ -27,7 +27,9 @@ swaggerSources.create("movieApp") {
     this.code.dependsOn(validation)
 }
 
-
+ext {
+    set("testcontainers.version", "1.21.0")
+}
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
 
@@ -35,10 +37,16 @@ dependencies {
     swaggerCodegen("org.openapitools:openapi-generator-cli:7.3.0")
     implementation("io.swagger.core.v3:swagger-annotations:2.2.20")
     implementation("jakarta.validation:jakarta.validation-api:3.1.1")
+
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.postgresql:postgresql")
+    implementation("org.flywaydb:flyway-core")
     runtimeOnly("org.flywaydb:flyway-database-postgresql")
 
-    implementation("org.flywaydb:flyway-core")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.testcontainers:junit-jupiter")
+    testImplementation("org.testcontainers:postgresql")
+    testImplementation("org.assertj:assertj-core:3.27.3")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
