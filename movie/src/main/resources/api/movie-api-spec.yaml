@@ -14,7 +14,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Movie'
+              $ref: '#/components/schemas/MovieDto'
 
       responses:
         '200':
@@ -53,11 +53,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Movie'
+                $ref: '#/components/schemas/MovieDto'
 
 components:
   schemas:
-    Movie:
+    MovieDto:
       type: object
       properties:
         title:
@@ -71,16 +71,19 @@ components:
           description: "name of the producer"
         coverImage:
           type: string
-        cast:
-          items:
-            type: string
-            description: name of the actor
-          description: "the list of actors"
+        language:
+          type: string
+          description: "language of the movie"
+        durationInMinutes:
+          type: integer
+          description: "length of the movie in minutes"
       required:
         - title
         - description
         - producer
         - coverImage
+        - language
+        - durationInMinutes
     CommonResponse:
       type: object
       properties:
