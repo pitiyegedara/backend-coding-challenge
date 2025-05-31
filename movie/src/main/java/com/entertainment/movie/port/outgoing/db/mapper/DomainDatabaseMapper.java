@@ -14,13 +14,30 @@ public class DomainDatabaseMapper {
      * @return MovieEntity
      */
     public MovieEntity mapFromDomainMovie(Movie movie) {
-        return new MovieEntity()
-                .setTitle(movie.getTitle())
-                .setDescription(movie.getDescription())
-                .setProducer(movie.getProducer())
-                .setDurationInMinutes(movie.getDurationInMinutes())
-                .setCoverImage(movie.getCoverImage())
-                .setMovieLanguage(movie.getMovieLanguage());
+        return MovieEntity.builder()
+                .title(movie.getTitle())
+                .description(movie.getDescription())
+                .producer(movie.getProducer())
+                .durationInMinutes(movie.getDurationInMinutes())
+                .movieLanguage(movie.getMovieLanguage())
+                .build();
+    }
+
+    /**
+     * Maps the database movie entity to a domain movie object
+     *
+     * @param movieEntity instance of the movie entity
+     * @return movie object
+     */
+    public Movie mapFromMovieEntity(MovieEntity movieEntity) {
+        return Movie.builder().id(movieEntity.getId()).title(movieEntity.getTitle())
+                .description(movieEntity.getDescription())
+                .durationInMinutes(movieEntity.getDurationInMinutes())
+                .movieLanguage(movieEntity.getMovieLanguage())
+                .producer(movieEntity.getProducer())
+                .createdAt(movieEntity.getCreatedAt())
+                .updatedAt(movieEntity.getUpdatedAt())
+                .build();
     }
 
 }

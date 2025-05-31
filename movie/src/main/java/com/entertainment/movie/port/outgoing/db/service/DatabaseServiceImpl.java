@@ -1,14 +1,16 @@
 package com.entertainment.movie.port.outgoing.db.service;
 
 import com.entertainment.movie.domain.exception.MovieCreateException;
+import com.entertainment.movie.domain.exception.MovieNotFoundException;
 import com.entertainment.movie.domain.service.DatabaseService;
 import com.entertainment.movie.domain.service.core.Movie;
+import com.entertainment.movie.port.outgoing.db.entity.MovieEntity;
 import com.entertainment.movie.port.outgoing.db.mapper.DomainDatabaseMapper;
 import com.entertainment.movie.port.outgoing.db.repository.MovieRepository;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
+import java.util.UUID;
 
 @Service
 public class DatabaseServiceImpl implements DatabaseService {
@@ -24,6 +26,11 @@ public class DatabaseServiceImpl implements DatabaseService {
         this.movieRepository = movieRepository;
     }
 
+    /**
+     * Save the movie data in the database
+     * @param movie domain movie object
+     * @throws MovieCreateException if the saving to database failed
+     */
     @Override
     public void saveMovie(Movie movie) throws MovieCreateException {
         try {
@@ -33,6 +40,18 @@ public class DatabaseServiceImpl implements DatabaseService {
         } catch (DataAccessException e) {
             throw new MovieCreateException(e.getMessage());
         }
+    }
+
+    /**
+     * View the movie details of the given id
+     * @param id id of the movie
+     * @return Domain movie object
+     */
+    @Override
+    public Movie viewMovie(UUID id) {
+        MovieEntity movieEntity = movieRepository.findById(id)
+                .orElseThrow(() -> new MovieNotFoundException("A movie can not be found with the id : " + id));
+        return domainDatabaseMapper.mapFromMovieEntity(movieEntity);
     }
 
 

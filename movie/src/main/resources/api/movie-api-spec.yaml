@@ -60,6 +60,9 @@ components:
     MovieDto:
       type: object
       properties:
+        id:
+          type: string
+          description: "id of the movie"
         title:
           type: string
           description: "title of the movie"
@@ -69,8 +72,6 @@ components:
         producer:
           type: string
           description: "name of the producer"
-        coverImage:
-          type: string
         language:
           type: string
           description: "language of the movie"
@@ -81,7 +82,6 @@ components:
         - title
         - description
         - producer
-        - coverImage
         - language
         - durationInMinutes
     CommonResponse:
