@@ -28,6 +28,7 @@ public class DatabaseServiceImpl implements DatabaseService {
 
     /**
      * Save the movie data in the database
+     *
      * @param movie domain movie object
      * @throws MovieCreateException if the saving to database failed
      */
@@ -44,13 +45,14 @@ public class DatabaseServiceImpl implements DatabaseService {
 
     /**
      * View the movie details of the given id
+     *
      * @param id id of the movie
      * @return Domain movie object
      */
     @Override
     public Movie viewMovie(UUID id) {
         MovieEntity movieEntity = movieRepository.findById(id)
-                .orElseThrow(() -> new MovieNotFoundException("A movie can not be found with the id : " + id));
+                .orElseThrow(() -> new MovieNotFoundException(id.toString()));
         return domainDatabaseMapper.mapFromMovieEntity(movieEntity);
     }
 

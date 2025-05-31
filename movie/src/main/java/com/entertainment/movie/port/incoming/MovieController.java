@@ -24,14 +24,14 @@ public class MovieController implements MovieApi {
     }
 
     @Override
-    public ResponseEntity<CommonResponse> create(MovieDto movieDto) throws Exception {
+    public ResponseEntity<CommonResponse> create(MovieDto movieDto) {
         var domainMovie = requestResponseMapper.mapToDomainMovie(movieDto);
         movieService.createMovie(domainMovie);
         return new ResponseEntity<>(requestResponseMapper.mapToCommonResponse(domainMovie), HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<MovieDto> view(String movieId) throws Exception {
+    public ResponseEntity<MovieDto> view(String movieId) {
         var movie = movieService.viewMovie(UUID.fromString(movieId));
         return new ResponseEntity<>(requestResponseMapper.mapToMovieDto(movie), HttpStatus.OK);
     }

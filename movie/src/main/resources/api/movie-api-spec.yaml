@@ -66,18 +66,28 @@ components:
         title:
           type: string
           description: "title of the movie"
+          minLength: 2
+          maxLength: 255
         description:
           type: string
           description: "a short description of the movie"
+          minLength: 10
+          maxLength: 500
         producer:
           type: string
           description: "name of the producer"
+          minLength: 3
+          maxLength: 255
         language:
           type: string
           description: "language of the movie"
+          minLength: 3
+          maxLength: 255
         durationInMinutes:
           type: integer
           description: "length of the movie in minutes"
+          maximum: 999
+          minimum: 1
       required:
         - title
         - description

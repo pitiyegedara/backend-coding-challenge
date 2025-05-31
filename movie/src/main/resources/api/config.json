@@ -10,7 +10,8 @@
   "openApiNullable": false,
   "useTags": true,
   "useGzipFeature" : true,
-  "unhandledException": true,
   "useSpringBoot3": true,
-  "useSwaggerUI": true
+  "useSwaggerUI": true,
+  "jakarta":true,
+  "useBeanValidation":true
 }
