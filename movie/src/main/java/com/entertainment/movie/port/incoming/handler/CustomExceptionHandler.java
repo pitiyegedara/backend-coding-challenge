@@ -2,12 +2,14 @@ package com.entertainment.movie.port.incoming.handler;
 
 import com.entertainment.movie.domain.exception.MovieCreateException;
 import com.entertainment.movie.domain.exception.MovieNotFoundException;
+import com.entertainment.movie.domain.exception.RateCreateException;
 import com.entertainment.movie.dto.CommonResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -50,9 +52,22 @@ public class CustomExceptionHandler {
      * @param ex an instance of Exception
      * @return ResponseEntity<CommonResponse> formatted response with internal server error status
      */
-    @ExceptionHandler(MovieCreateException.class)
-    public ResponseEntity<CommonResponse> handleInternalExceptions(MovieCreateException ex) {
+    @ExceptionHandler({MovieCreateException.class, RateCreateException.class})
+    public ResponseEntity<CommonResponse> handleInternalExceptions(Exception ex) {
         return new ResponseEntity<>(new CommonResponse().message(ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    /**
+     * Handles method argument mismatch exceptions
+     *
+     * @param ex exception instance
+     * @return ResponseEntity<CommonResponse> formatted response with bad request exception
+     */
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<CommonResponse> handleBadRequestException(MethodArgumentTypeMismatchException ex) {
+        CommonResponse commonResponse = new CommonResponse()
+                .message("parameter `" + ex.getPropertyName() + "` is invalid");
+        return new ResponseEntity<>(commonResponse, HttpStatus.BAD_REQUEST);
     }
 
 }

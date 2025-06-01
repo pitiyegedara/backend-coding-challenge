@@ -39,7 +39,7 @@ public class MovieStorageServiceImpl implements MovieStorageService {
             movieRepository.save(movieEntity);
             movie.setId(movieEntity.getId());
         } catch (DataAccessException e) {
-            throw new MovieCreateException(e.getMessage());
+            throw new MovieCreateException("save to database failed");
         }
     }
 
