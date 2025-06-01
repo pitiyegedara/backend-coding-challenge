@@ -3,8 +3,9 @@ package com.entertainment.movie.port.incoming;
 
 import com.entertainment.movie.api.MovieApi;
 import com.entertainment.movie.domain.service.MovieService;
+import com.entertainment.movie.dto.BasicMovieDto;
 import com.entertainment.movie.dto.CommonResponse;
-import com.entertainment.movie.dto.MovieDto;
+import com.entertainment.movie.dto.ExtendedMovieDto;
 import com.entertainment.movie.port.incoming.mapper.RequestResponseMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,15 +25,15 @@ public class MovieController implements MovieApi {
     }
 
     @Override
-    public ResponseEntity<CommonResponse> create(MovieDto movieDto) {
-        var domainMovie = requestResponseMapper.mapToDomainMovie(movieDto);
+    public ResponseEntity<CommonResponse> createMovie(BasicMovieDto basicMovieDto) {
+        var domainMovie = requestResponseMapper.mapToDomainMovie(basicMovieDto);
         movieService.createMovie(domainMovie);
         return new ResponseEntity<>(requestResponseMapper.mapToCommonResponse(domainMovie), HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<MovieDto> view(String movieId) {
+    public ResponseEntity<ExtendedMovieDto> viewMovieById(String movieId) {
         var movie = movieService.viewMovie(UUID.fromString(movieId));
-        return new ResponseEntity<>(requestResponseMapper.mapToMovieDto(movie), HttpStatus.OK);
+        return new ResponseEntity<>(requestResponseMapper.mapToExtendedMovieDto(movie), HttpStatus.OK);
     }
 }

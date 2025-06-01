@@ -10,13 +10,12 @@ import java.util.UUID;
 @Builder
 @Getter
 @Setter
-public class Movie {
+public class Rating {
     private UUID id;
-    private String title;
-    private String description;
-    private String producer;
-    private String movieLanguage;
-    private int durationInMinutes;
+    private UUID movieId;
+    private UUID userId;
+    private int ratingValue;
+    private String comment;
     private Date createdAt;
     private Date updatedAt;
 }

@@ -6,7 +6,7 @@ info:
 paths:
   /movie:
     post:
-      operationId: create
+      operationId: createMovie
       tags:
         - movie
       requestBody:
@@ -14,7 +14,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MovieDto'
+              $ref: '#/components/schemas/BasicMovieDto'
 
       responses:
         '200':
@@ -35,9 +35,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CommonResponse'
+
   /movie/{movieId}:
     get:
-      operationId: view
+      operationId: viewMovieById
       tags:
         - movie
       parameters:
@@ -53,16 +54,105 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MovieDto'
+                $ref: '#/components/schemas/ExtendedMovieDto'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonResponse'
+        '500':
+          description: Internal server error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonResponse'
+  /rate/{movieId}/{userId}:
+    post:
+      operationId: createRating
+      tags:
+        - rate
+      parameters:
+        - name: movieId
+          in: path
+          required: true
+          description: The id of the movie to rate
+          schema:
+            type: string
+        - name: userId
+          in: path
+          required: true
+          description: The id of the user who given the rating
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RateDto'
+
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonResponse'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonResponse'
+        '500':
+          description: Internal server error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonResponse'
+  /profile/{userId}:
+    get:
+      operationId: viewProfile
+      tags:
+        - profile
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: The id of the user who given the ratings
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRatedMovieList'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonResponse'
+        '500':
+          description: Internal server error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonResponse'
 
 components:
   schemas:
-    MovieDto:
+    UserRatedMovieList:
+      type: array
+      items:
+        $ref: '#/components/schemas/UserRatedMovieDto'
+
+    BasicMovieDto:
       type: object
       properties:
-        id:
-          type: string
-          description: "id of the movie"
         title:
           type: string
           description: "title of the movie"
@@ -94,6 +184,53 @@ components:
         - producer
         - language
         - durationInMinutes
+
+    ExtendedMovieDto:
+      allOf:
+        - $ref: "#/components/schemas/BasicMovieDto"
+        - type: object
+          properties:
+            id:
+              type: string
+              description: "id of the movie"
+            overallRating:
+              type: string
+              description: "overall rating"
+          required:
+            - id
+            - overallRating
+
+    UserRatedMovieDto:
+      allOf:
+        - $ref: "#/components/schemas/BasicMovieDto"
+        - type: object
+          properties:
+            id:
+              type: string
+              description: "id of the movie"
+            userRating:
+              type: string
+              description: "the rating given by the user"
+          required:
+            - id
+            - userRating
+
+    RateDto:
+      type: object
+      properties:
+        ratingValue:
+          type: integer
+          description: "given rating value for the movie"
+          minLength: 1
+          maxLength: 10
+        comment:
+          type: string
+          description: "a short comment"
+          minLength: 0
+          maxLength: 500
+      required:
+        - ratingValue
+
     CommonResponse:
       type: object
       properties:
