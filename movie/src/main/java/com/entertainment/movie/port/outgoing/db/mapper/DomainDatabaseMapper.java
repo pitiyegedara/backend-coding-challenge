@@ -1,8 +1,12 @@
 package com.entertainment.movie.port.outgoing.db.mapper;
 
 import com.entertainment.movie.domain.service.core.Movie;
+import com.entertainment.movie.domain.service.core.Rating;
 import com.entertainment.movie.port.outgoing.db.entity.MovieEntity;
+import com.entertainment.movie.port.outgoing.db.entity.RatingEntity;
 import org.springframework.stereotype.Component;
+
+import java.util.Date;
 
 @Component
 public class DomainDatabaseMapper {
@@ -37,6 +41,22 @@ public class DomainDatabaseMapper {
                 .producer(movieEntity.getProducer())
                 .createdAt(movieEntity.getCreatedAt())
                 .updatedAt(movieEntity.getUpdatedAt())
+                .build();
+    }
+
+    /**
+     * Maps the domain rating details to RatingEntity
+     * @param rating domain details of the rating
+     * @return RatingEntity
+     */
+    public RatingEntity mapFromDomainRating(Rating rating) {
+        return RatingEntity.builder()
+                .userId(rating.getUserId())
+                .movieId(rating.getMovieId())
+                .ratingValue(rating.getRatingValue())
+                .comment(rating.getComment())
+                .createdAt(new Date())
+                .updatedAt(new Date())
                 .build();
     }
 

@@ -79,12 +79,14 @@ paths:
           description: The id of the movie to rate
           schema:
             type: string
+            format: uuid
         - name: userId
           in: path
           required: true
           description: The id of the user who given the rating
           schema:
             type: string
+            format: uuid
       requestBody:
         required: true
         content:

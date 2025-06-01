@@ -28,7 +28,9 @@ public class MovieController implements MovieApi {
     public ResponseEntity<CommonResponse> createMovie(BasicMovieDto basicMovieDto) {
         var domainMovie = requestResponseMapper.mapToDomainMovie(basicMovieDto);
         movieService.createMovie(domainMovie);
-        return new ResponseEntity<>(requestResponseMapper.mapToCommonResponse(domainMovie), HttpStatus.CREATED);
+        return new ResponseEntity<>(
+                requestResponseMapper.mapToCommonResponse("successfully created", domainMovie.getId()),
+                HttpStatus.CREATED);
     }
 
     @Override
