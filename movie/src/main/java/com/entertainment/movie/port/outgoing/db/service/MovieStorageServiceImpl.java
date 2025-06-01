@@ -2,7 +2,7 @@ package com.entertainment.movie.port.outgoing.db.service;
 
 import com.entertainment.movie.domain.exception.MovieCreateException;
 import com.entertainment.movie.domain.exception.MovieNotFoundException;
-import com.entertainment.movie.domain.service.DatabaseService;
+import com.entertainment.movie.domain.outgoing.MovieStorageService;
 import com.entertainment.movie.domain.service.core.Movie;
 import com.entertainment.movie.port.outgoing.db.entity.MovieEntity;
 import com.entertainment.movie.port.outgoing.db.mapper.DomainDatabaseMapper;
@@ -13,12 +13,12 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class DatabaseServiceImpl implements DatabaseService {
+public class MovieStorageServiceImpl implements MovieStorageService {
 
     private final DomainDatabaseMapper domainDatabaseMapper;
     private final MovieRepository movieRepository;
 
-    public DatabaseServiceImpl(
+    public MovieStorageServiceImpl(
             DomainDatabaseMapper domainDatabaseMapper,
             MovieRepository movieRepository
     ) {

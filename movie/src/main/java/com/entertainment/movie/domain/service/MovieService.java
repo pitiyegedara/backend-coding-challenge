@@ -1,6 +1,7 @@
 package com.entertainment.movie.domain.service;
 
 import com.entertainment.movie.domain.service.core.Movie;
+import com.entertainment.movie.domain.outgoing.MovieStorageService;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -8,17 +9,17 @@ import java.util.UUID;
 @Service
 public class MovieService {
 
-    private final DatabaseService databaseService;
+    private final MovieStorageService movieStorageService;
 
-    public MovieService(DatabaseService databaseService) {
-        this.databaseService = databaseService;
+    public MovieService(MovieStorageService movieStorageService) {
+        this.movieStorageService = movieStorageService;
     }
 
     public void createMovie(Movie movie) {
-        databaseService.saveMovie(movie);
+        movieStorageService.saveMovie(movie);
     }
 
     public Movie viewMovie(UUID id) {
-        return databaseService.viewMovie(id);
+        return movieStorageService.viewMovie(id);
     }
 }

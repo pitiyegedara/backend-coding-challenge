@@ -1,10 +1,10 @@
-package com.entertainment.movie.domain.service;
+package com.entertainment.movie.domain.outgoing;
 
 import com.entertainment.movie.domain.service.core.Movie;
 
 import java.util.UUID;
 
-public interface DatabaseService {
+public interface MovieStorageService {
 
     void saveMovie(Movie movie);
 
