@@ -58,7 +58,7 @@ public class MovieApiIntegrationTest {
                 CommonResponse.class
         );
 
-        Assertions.assertEquals(HttpStatus.CREATED,createMovieResponse.getStatusCode());
+        Assertions.assertEquals(HttpStatus.CREATED, createMovieResponse.getStatusCode());
         Assertions.assertNotNull(createMovieResponse.getBody());
         Assertions.assertEquals("successfully created", createMovieResponse.getBody().getMessage());
         List<MovieEntity> movies = movieRepository.findAll();
@@ -74,7 +74,7 @@ public class MovieApiIntegrationTest {
 
         assertThat(movies.getFirst())
                 .usingRecursiveComparison()
-                .ignoringFields("id")
+                .ignoringFields("id", "createdAt", "updatedAt")
                 .isEqualTo(expectedDBState);
     }
 
@@ -93,7 +93,7 @@ public class MovieApiIntegrationTest {
                 CommonResponse.class
         );
 
-        Assertions.assertEquals(HttpStatus.BAD_REQUEST,createMovieResponse.getStatusCode());
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, createMovieResponse.getStatusCode());
         Assertions.assertNotNull(createMovieResponse.getBody());
 
         Assertions.assertEquals("language: must not be null",

@@ -3,6 +3,9 @@ package com.entertainment.port.incoming.handler;
 import com.entertainment.domain.movie.exception.MovieCreateException;
 import com.entertainment.domain.movie.exception.MovieNotFoundException;
 import com.entertainment.domain.movie.exception.RateCreateException;
+import com.entertainment.domain.user.exception.UserAlreadyExistException;
+import com.entertainment.domain.user.exception.UserCreationException;
+import com.entertainment.domain.user.exception.UserNotFoundException;
 import com.entertainment.movie.dto.CommonResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,9 +44,20 @@ public class CustomExceptionHandler {
      * @param ex an instance of Exception
      * @return ResponseEntity<CommonResponse> formatted response with Not found status
      */
-    @ExceptionHandler(MovieNotFoundException.class)
-    public ResponseEntity<CommonResponse> handleNotFoundExceptions(MovieNotFoundException ex) {
+    @ExceptionHandler({MovieNotFoundException.class, UserNotFoundException.class})
+    public ResponseEntity<CommonResponse> handleNotFoundExceptions(Exception ex) {
         return new ResponseEntity<>(new CommonResponse().message(ex.getMessage()), HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Handles custom validation exceptions
+     *
+     * @param ex an instance of Exception
+     * @return ResponseEntity<CommonResponse> formatted response with already reported status
+     */
+    @ExceptionHandler(UserAlreadyExistException.class)
+    public ResponseEntity<CommonResponse> handleAlreadyExistExceptions(Exception ex) {
+        return new ResponseEntity<>(new CommonResponse().message(ex.getMessage()), HttpStatus.ALREADY_REPORTED);
     }
 
     /**
@@ -52,7 +66,7 @@ public class CustomExceptionHandler {
      * @param ex an instance of Exception
      * @return ResponseEntity<CommonResponse> formatted response with internal server error status
      */
-    @ExceptionHandler({MovieCreateException.class, RateCreateException.class})
+    @ExceptionHandler({MovieCreateException.class, RateCreateException.class, UserCreationException.class})
     public ResponseEntity<CommonResponse> handleInternalExceptions(Exception ex) {
         return new ResponseEntity<>(new CommonResponse().message(ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }

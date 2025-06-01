@@ -1,18 +1,18 @@
 package com.entertainment.port.outgoing.db.service;
 
+import com.entertainment.domain.movie.core.Movie;
 import com.entertainment.domain.movie.exception.MovieCreateException;
 import com.entertainment.domain.movie.exception.MovieNotFoundException;
 import com.entertainment.domain.movie.outgoing.MovieStorageService;
-import com.entertainment.domain.movie.core.Movie;
 import com.entertainment.port.outgoing.db.entity.MovieEntity;
 import com.entertainment.port.outgoing.db.mapper.DomainDatabaseMapper;
 import com.entertainment.port.outgoing.db.repository.MovieRepository;
 import org.springframework.dao.DataAccessException;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
-@Service
+@Component
 public class MovieStorageServiceImpl implements MovieStorageService {
 
     private final DomainDatabaseMapper domainDatabaseMapper;

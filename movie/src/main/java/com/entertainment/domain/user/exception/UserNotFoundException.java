@@ -1,8 +1,8 @@
-package com.entertainment.domain.movie.exception;
+package com.entertainment.domain.user.exception;
 
-public class MovieNotFoundException extends RuntimeException{
+public class UserNotFoundException extends RuntimeException{
 
-    public MovieNotFoundException(String uuid) {
-        super("Could not find movie " + uuid + ".");
+    public UserNotFoundException(String uuid) {
+        super("Could not find user for : " + uuid + ".");
     }
 }
