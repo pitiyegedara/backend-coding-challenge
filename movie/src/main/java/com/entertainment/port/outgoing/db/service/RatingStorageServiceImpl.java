@@ -1,14 +1,14 @@
 package com.entertainment.port.outgoing.db.service;
 
+import com.entertainment.domain.movie.core.Rating;
 import com.entertainment.domain.movie.exception.RateCreateException;
 import com.entertainment.domain.movie.outgoing.RatingStorageService;
-import com.entertainment.domain.movie.core.Rating;
 import com.entertainment.port.outgoing.db.mapper.DomainDatabaseMapper;
 import com.entertainment.port.outgoing.db.repository.RatingRepository;
 import org.springframework.dao.DataAccessException;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 public class RatingStorageServiceImpl implements RatingStorageService {
 
     private final DomainDatabaseMapper domainDatabaseMapper;

@@ -2,10 +2,8 @@ package com.entertainment.port.incoming.mapper;
 
 import com.entertainment.domain.movie.core.Movie;
 import com.entertainment.domain.movie.core.Rating;
-import com.entertainment.movie.dto.BasicMovieDto;
-import com.entertainment.movie.dto.CommonResponse;
-import com.entertainment.movie.dto.ExtendedMovieDto;
-import com.entertainment.movie.dto.RateDto;
+import com.entertainment.domain.user.core.User;
+import com.entertainment.movie.dto.*;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -30,8 +28,9 @@ public class RequestResponseMapper {
 
     /**
      * Creates a common response object using the given id and the message
+     *
      * @param message response message
-     * @param id ID of the created object
+     * @param id      ID of the created object
      * @return CommonResponse object
      */
     public CommonResponse mapToCommonResponse(String message, UUID id) {
@@ -57,9 +56,10 @@ public class RequestResponseMapper {
     }
 
     /**
-     * Map the rating details received through the API to domain rating object
+     * Maps the rating details received through the API to domain rating object
+     *
      * @param rateDto rating details
-     * @param userId the person who gives the rating
+     * @param userId  the person who gives the rating
      * @param movieId the movie the rate is given
      * @return domain Rating object
      */
@@ -68,5 +68,36 @@ public class RequestResponseMapper {
                 .userId(UUID.fromString(userId))
                 .ratingValue(rateDto.getRatingValue())
                 .comment(rateDto.getComment()).build();
+    }
+
+    /**
+     * Maps api user details into a domain user object
+     *
+     * @param userDto user details received through api
+     * @return User domain user details object
+     */
+    public User mapToDomainUser(UserDto userDto) {
+        return User.builder()
+                .userName(userDto.getUserName())
+                .firstName(userDto.getFirstName())
+                .lastName(userDto.getLastName())
+                .email(userDto.getEmail())
+                .address(userDto.getAddress()).build();
+    }
+
+    /**
+     * Maps the domain user object to an api user object
+     *
+     * @param user domain user detail
+     * @return ExtendedUserDto api user detail
+     */
+    public ExtendedUserDto mapToExtendedUser(User user) {
+        return new ExtendedUserDto()
+                .id(user.getId())
+                .userName(user.getUserName())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .address(user.getAddress());
     }
 }

@@ -175,6 +175,38 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CommonResponse'
+  /user/{userId}:
+    get:
+      operationId: viewUserById
+      tags:
+        - user
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: The id of the user to retrieve
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExtendedUserDto'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonResponse'
+        '500':
+          description: Internal server error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonResponse'
 
 components:
   schemas:
@@ -213,6 +245,19 @@ components:
         - lastName
         - email
         - address
+
+    ExtendedUserDto:
+      allOf:
+        - $ref: "#/components/schemas/UserDto"
+        - type: object
+          properties:
+            id:
+              type: string
+              description: "id of the user"
+              format: uuid
+          required:
+            - id
+
     UserRatedMovieList:
       type: array
       items:

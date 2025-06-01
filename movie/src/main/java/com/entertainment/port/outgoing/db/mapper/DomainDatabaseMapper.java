@@ -2,8 +2,10 @@ package com.entertainment.port.outgoing.db.mapper;
 
 import com.entertainment.domain.movie.core.Movie;
 import com.entertainment.domain.movie.core.Rating;
+import com.entertainment.domain.user.core.User;
 import com.entertainment.port.outgoing.db.entity.MovieEntity;
 import com.entertainment.port.outgoing.db.entity.RatingEntity;
+import com.entertainment.port.outgoing.db.entity.UserEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -24,6 +26,8 @@ public class DomainDatabaseMapper {
                 .producer(movie.getProducer())
                 .durationInMinutes(movie.getDurationInMinutes())
                 .movieLanguage(movie.getMovieLanguage())
+                .createdAt(new Date())
+                .updatedAt(new Date())
                 .build();
     }
 
@@ -46,6 +50,7 @@ public class DomainDatabaseMapper {
 
     /**
      * Maps the domain rating details to RatingEntity
+     *
      * @param rating domain details of the rating
      * @return RatingEntity
      */
@@ -57,6 +62,42 @@ public class DomainDatabaseMapper {
                 .comment(rating.getComment())
                 .createdAt(new Date())
                 .updatedAt(new Date())
+                .build();
+    }
+
+    /**
+     * Maps the domain user details to the UserEntity
+     *
+     * @param user domain user details
+     * @return UserEntity
+     */
+    public UserEntity mapFromDomainUser(User user) {
+        return UserEntity.builder()
+                .userName(user.getUserName())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .address(user.getAddress())
+                .createdAt(new Date())
+                .updatedAt(new Date())
+                .build();
+    }
+
+    /**
+     * Maps the userEntity to user domain
+     *
+     * @param userEntity instance of the user entity
+     * @return User domain user object
+     */
+    public User mapFromUserEntity(UserEntity userEntity) {
+        return User.builder()
+                .userName(userEntity.getUserName())
+                .firstName(userEntity.getFirstName())
+                .lastName(userEntity.getLastName())
+                .email(userEntity.getEmail())
+                .address(userEntity.getAddress())
+                .createdAt(userEntity.getCreatedAt())
+                .updatedAt(userEntity.getUpdatedAt())
                 .build();
     }
 
