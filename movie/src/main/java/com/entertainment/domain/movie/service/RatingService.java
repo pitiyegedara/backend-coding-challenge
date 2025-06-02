@@ -21,6 +21,7 @@ public class RatingService {
 
     /**
      * Save rating details
+     * TODO : Add a validation to avoid the same user putting multiple ratings for the same movie
      *
      * @param rating details
      */
@@ -28,6 +29,15 @@ public class RatingService {
         ratingStorageService.saveRating(rating);
     }
 
+    /**
+     * Fetch the movies the user has already given ratings
+     * Fetch the overall rating information of those movies and calculate the overall rating
+     * <p>
+     * TODO : Consider implementing a cashing strategy to avoid repetitive database read
+     *
+     * @param userId user ID to fetch the rating data
+     * @return Set<MovieRating> consolidated rating information
+     */
     public Set<MovieRating> getRatedMovies(UUID userId) {
         var ratedMovies = ratingStorageService.getRatedMovies(userId);
         Set<UUID> movieIds = new HashSet<>();

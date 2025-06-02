@@ -84,6 +84,9 @@ public class MovieApiIntegrationTest {
                 .isEqualTo(expectedDBState);
     }
 
+    /**
+     * TODO : refactor with a parameterised test to cover more cases without code repetition
+     */
     @Test
     @DisplayName("should return a 400 error for the requests with invalid parameters")
     void badRequestErrorShouldBeThrownForInvalidInputs() {

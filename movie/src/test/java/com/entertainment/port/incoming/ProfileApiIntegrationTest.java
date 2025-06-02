@@ -158,6 +158,7 @@ public class ProfileApiIntegrationTest {
         );
 
         ExtendedUserDto expectedUserDto = new ExtendedUserDto()
+                .id(userEntity.getId())
                 .userName(userEntity.getUserName())
                 .firstName(userEntity.getFirstName())
                 .lastName(userEntity.getLastName())

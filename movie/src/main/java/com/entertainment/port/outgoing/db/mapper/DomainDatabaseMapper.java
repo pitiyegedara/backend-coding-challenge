@@ -91,6 +91,7 @@ public class DomainDatabaseMapper {
      */
     public User mapFromUserEntity(UserEntity userEntity) {
         return User.builder()
+                .id(userEntity.getId())
                 .userName(userEntity.getUserName())
                 .firstName(userEntity.getFirstName())
                 .lastName(userEntity.getLastName())

@@ -16,6 +16,12 @@ public class UserDetailService {
         this.userStorageService = userStorageService;
     }
 
+    /**
+     * Creates the user in the database
+     * TODO : add unit tests to cover the error cases
+     *
+     * @param user domain user object
+     */
     public void createUser(User user) {
         if (userStorageService.isUserNameAlreadyExist(user.getUserName())) {
             throw new UserAlreadyExistException("Username : " + user.getUserName() + ", already exist");
