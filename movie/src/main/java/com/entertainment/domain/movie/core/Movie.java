@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.UUID;
 
@@ -19,4 +20,7 @@ public class Movie {
     private int durationInMinutes;
     private Date createdAt;
     private Date updatedAt;
+
+    private BigDecimal overallRating;
+    private Long totalRatings;
 }

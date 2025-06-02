@@ -34,8 +34,8 @@ public class MovieController implements MovieApi {
     }
 
     @Override
-    public ResponseEntity<ExtendedMovieDto> viewMovieById(String movieId) {
-        var movie = movieService.viewMovie(UUID.fromString(movieId));
+    public ResponseEntity<ExtendedMovieDto> viewMovieById(UUID movieId) {
+        var movie = movieService.viewMovie(movieId);
         return new ResponseEntity<>(requestResponseMapper.mapToExtendedMovieDto(movie), HttpStatus.OK);
     }
 }
