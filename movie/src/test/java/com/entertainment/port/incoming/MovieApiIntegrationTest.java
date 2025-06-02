@@ -1,11 +1,13 @@
-package com.entertainment.movie.port.incoming;
+package com.entertainment.port.incoming;
 
 import com.entertainment.config.TestExtension;
 import com.entertainment.movie.dto.BasicMovieDto;
 import com.entertainment.movie.dto.CommonResponse;
 import com.entertainment.movie.dto.ExtendedMovieDto;
 import com.entertainment.port.outgoing.db.entity.MovieEntity;
+import com.entertainment.port.outgoing.db.entity.RatingEntity;
 import com.entertainment.port.outgoing.db.repository.MovieRepository;
+import com.entertainment.port.outgoing.db.repository.RatingRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,9 +40,12 @@ public class MovieApiIntegrationTest {
     private TestRestTemplate restTemplate;
     @Autowired
     private MovieRepository movieRepository;
+    @Autowired
+    private RatingRepository ratingRepository;
 
     @BeforeEach
     public void beforeEach() {
+        ratingRepository.deleteAll();
         movieRepository.deleteAll();
     }
 
@@ -111,11 +117,24 @@ public class MovieApiIntegrationTest {
                 .producer("timmy").durationInMinutes(120).movieLanguage("English").build();
         movieRepository.save(movieEntity);
 
+        ratingRepository.save(RatingEntity.builder()
+                .ratingValue(5)
+                .movieId(movieEntity.getId())
+                .userId(UUID.randomUUID())
+                .build());
+        ratingRepository.save(RatingEntity.builder()
+                .ratingValue(6)
+                .movieId(movieEntity.getId())
+                .userId(UUID.randomUUID())
+                .build());
+
         ExtendedMovieDto expectedMovieDto = new ExtendedMovieDto().title(movieEntity.getTitle())
                 .description(movieEntity.getDescription())
                 .producer(movieEntity.getProducer())
                 .durationInMinutes(movieEntity.getDurationInMinutes())
                 .language(movieEntity.getMovieLanguage())
+                .totalRatings(2)
+                .overallRating(BigDecimal.valueOf(5.5))
                 .id(movieEntity.getId().toString());
 
         ResponseEntity<ExtendedMovieDto> getMovieResponse = this.restTemplate.getForEntity(

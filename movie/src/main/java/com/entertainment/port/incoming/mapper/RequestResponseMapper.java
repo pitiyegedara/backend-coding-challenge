@@ -1,11 +1,15 @@
 package com.entertainment.port.incoming.mapper;
 
 import com.entertainment.domain.movie.core.Movie;
+import com.entertainment.domain.movie.core.MovieRating;
 import com.entertainment.domain.movie.core.Rating;
 import com.entertainment.domain.user.core.User;
 import com.entertainment.movie.dto.*;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Component
@@ -52,6 +56,8 @@ public class RequestResponseMapper {
                 .description(movie.getDescription())
                 .producer(movie.getProducer())
                 .language(movie.getMovieLanguage())
+                .overallRating(movie.getOverallRating())
+                .totalRatings(movie.getTotalRatings() == null ? null : movie.getTotalRatings().intValue())
                 .durationInMinutes(movie.getDurationInMinutes());
     }
 
@@ -99,5 +105,29 @@ public class RequestResponseMapper {
                 .lastName(user.getLastName())
                 .email(user.getEmail())
                 .address(user.getAddress());
+    }
+
+    /**
+     * Maps a list of domain movieRatings to a list of api UserRatedMovieDto
+     *
+     * @param movieRatings domain rating list
+     * @return List<UserRatedMovieDto> api rating list
+     */
+    public List<UserRatedMovieDto> mapToUserRatedMovieDtoList(Set<MovieRating> movieRatings) {
+        List<UserRatedMovieDto> userRatedMovieDtoList = new ArrayList<>();
+        movieRatings.forEach(movieRating -> {
+            UserRatedMovieDto userRatedMovieDto = new UserRatedMovieDto();
+            userRatedMovieDto.setTitle(movieRating.getMovieTitle());
+            userRatedMovieDto.setId(movieRating.getMovieId().toString());
+            userRatedMovieDto.description(movieRating.getMovieDescription());
+            userRatedMovieDto.producer(movieRating.getMovieProducer());
+            userRatedMovieDto.language(movieRating.getMovieLanguage());
+            userRatedMovieDto.durationInMinutes(movieRating.getMovieDuration());
+            userRatedMovieDto.setOverallRating(movieRating.getOverallRating());
+            userRatedMovieDto.setTotalRatings(movieRating.getTotalRatings().intValue());
+            userRatedMovieDto.setUserRating(movieRating.getUserRating());
+            userRatedMovieDtoList.add(userRatedMovieDto);
+        });
+        return userRatedMovieDtoList;
     }
 }

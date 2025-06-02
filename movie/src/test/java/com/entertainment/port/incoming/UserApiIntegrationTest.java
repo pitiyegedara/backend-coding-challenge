@@ -1,4 +1,4 @@
-package com.entertainment.movie.port.incoming;
+package com.entertainment.port.incoming;
 
 import com.entertainment.config.TestExtension;
 import com.entertainment.movie.dto.CommonResponse;

@@ -48,6 +48,7 @@ paths:
           description: The id of the movie to retrieve
           schema:
             type: string
+            format: uuid
       responses:
         '200':
           description: Successful response.
@@ -125,13 +126,14 @@ paths:
           description: The id of the user who given the ratings
           schema:
             type: string
+            format: uuid
       responses:
         '200':
           description: Successful response.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserRatedMovieList'
+                $ref: '#/components/schemas/UserProfileDto'
         '400':
           description: Bad request.
           content:
@@ -258,11 +260,6 @@ components:
           required:
             - id
 
-    UserRatedMovieList:
-      type: array
-      items:
-        $ref: '#/components/schemas/UserRatedMovieDto'
-
     BasicMovieDto:
       type: object
       properties:
@@ -307,11 +304,15 @@ components:
               type: string
               description: "id of the movie"
             overallRating:
-              type: string
+              type: number
               description: "overall rating"
+            totalRatings:
+              type: integer
+              description: "total number of ratings"
           required:
             - id
             - overallRating
+            - totalRatings
 
     UserRatedMovieDto:
       allOf:
@@ -322,11 +323,30 @@ components:
               type: string
               description: "id of the movie"
             userRating:
-              type: string
+              type: integer
               description: "the rating given by the user"
+            overallRating:
+              type: number
+              description: "overall rating"
+            totalRatings:
+              type: integer
+              description: "total number of ratings"
           required:
             - id
             - userRating
+            - overallRating
+            - totalRatings
+
+    UserProfileDto:
+      type: object
+      description: "profile data of the user"
+      properties:
+        ratedMovies:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserRatedMovieDto'
+        userDetail:
+          $ref: "#/components/schemas/ExtendedUserDto"
 
     RateDto:
       type: object

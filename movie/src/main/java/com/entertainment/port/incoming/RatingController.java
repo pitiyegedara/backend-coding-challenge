@@ -1,7 +1,7 @@
 package com.entertainment.port.incoming;
 
-import com.entertainment.movie.api.RateApi;
 import com.entertainment.domain.movie.service.RatingService;
+import com.entertainment.movie.api.RateApi;
 import com.entertainment.movie.dto.CommonResponse;
 import com.entertainment.movie.dto.RateDto;
 import com.entertainment.port.incoming.mapper.RequestResponseMapper;
@@ -21,6 +21,7 @@ public class RatingController implements RateApi {
         this.ratingService = ratingService;
         this.requestResponseMapper = requestResponseMapper;
     }
+
 
     @Override
     public ResponseEntity<CommonResponse> createRating(UUID movieId, UUID userId, RateDto rateDto) {
