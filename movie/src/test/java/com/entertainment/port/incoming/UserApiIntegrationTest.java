@@ -144,6 +144,7 @@ public class UserApiIntegrationTest {
         userRepository.save(userEntity);
 
         ExtendedUserDto expectedUserDto = new ExtendedUserDto()
+                .id(userEntity.getId())
                 .userName(userEntity.getUserName())
                 .firstName(userEntity.getFirstName())
                 .lastName(userEntity.getLastName())
